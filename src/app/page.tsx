@@ -1,5 +1,6 @@
-import HistoryButton from "../components/HistoryButton";
-import LinkForm from "../components/LinkForm ";
+import HistoryButton from "@/components/HistoryButton";
+import LinkForm from "@/components/LinkForm ";
+
 
 export default function Home() {
   return (
