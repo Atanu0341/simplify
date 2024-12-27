@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-export async function GET(request: Request, context: { params: { id: string } }) {
-    const shortId = context.params.id; // Access params through the context object
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const shortId = params.id; // Directly access params from the second argument
     const link = await prisma.link.findFirst({
         where: {
             shortUrl: {
