@@ -3,23 +3,23 @@ import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-export async function GET(request: Request, {params}: {params: {id: string}}){
-    const shortId = params.id;
+export async function GET(request: Request, context: { params: { id: string } }) {
+    const shortId = context.params.id; // Access params through the context object
     const link = await prisma.link.findFirst({
-        where:{
-            shortUrl:{
+        where: {
+            shortUrl: {
                 endsWith: shortId
             }
         }
     })
 
-    if(!link){
-        return new NextResponse('Not Found', {status: 404})
+    if (!link) {
+        return new NextResponse('Not Found', { status: 404 })
     }
 
     await prisma.link.update({
-        where:{id: link.id},
-        data:{clicks: {increment: 1}}
+        where: { id: link.id },
+        data: { clicks: { increment: 1 } }
     })
 
     return NextResponse.redirect(link.originalUrl)
