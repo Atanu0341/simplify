@@ -1,15 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { type NextRequest } from 'next/server'
+import { redirect } from 'next/navigation'
 
 const prisma = new PrismaClient()
 
-export async function GET(
-    req: NextRequest,
-) {
-    // Get the id from the URL path segments
-    const segments = req.nextUrl.pathname.split('/')
-    const shortId = segments[segments.length - 1]
-
+export default async function ShortLinkPage({ params }: { params: { id: string } }) {
+    const shortId = params.id
     const link = await prisma.link.findFirst({
         where: {
             shortUrl: {
@@ -19,12 +14,7 @@ export async function GET(
     })
 
     if (!link) {
-        return new Response(JSON.stringify({ error: 'Not Found' }), {
-            status: 404,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+        throw new Error('Link not found')
     }
 
     await prisma.link.update({
@@ -32,5 +22,5 @@ export async function GET(
         data: { clicks: { increment: 1 } },
     })
 
-    return Response.redirect(link.originalUrl)
+    redirect(link.originalUrl)
 }
