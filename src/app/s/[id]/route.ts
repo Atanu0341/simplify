@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
-) {
-  const shortId = context.params.id
+  { params }: { params: { id: string } }
+): Promise<NextResponse> {
+  const shortId = params.id
   const link = await prisma.link.findFirst({
     where: {
       shortUrl: {
@@ -17,7 +17,7 @@ export async function GET(
   })
 
   if (!link) {
-    return new NextResponse('Not Found', { status: 404 })
+    return NextResponse.json({ error: 'Not Found' }, { status: 404 })
   }
 
   await prisma.link.update({
