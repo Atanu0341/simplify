@@ -3,17 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-// Define the params interface
-interface Params {
-    id: string;
-}
-
 export async function GET(
-    request: NextRequest,
-    // Use the more specific context typing
-    context: { params: Params }
+    _req: NextRequest,
+    { params }: { params: { id: string } } & { searchParams: { [key: string]: string | string[] | undefined } }
 ) {
-    const shortId = context.params.id
+    const shortId = params.id
     const link = await prisma.link.findFirst({
         where: {
             shortUrl: {
