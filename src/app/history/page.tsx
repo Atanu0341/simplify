@@ -1,4 +1,4 @@
-import { getHistory } from '@/actions'
+import { getHistory } from '@/src/actions'
 import Image from 'next/image'
 import Link from 'next/link'
 
