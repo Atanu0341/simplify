@@ -3,15 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-type Props = {
-    params: {
-        id: string
-    }
-}
-
 export async function GET(
-    request: NextRequest,
-    { params }: Props
+    req: NextRequest,
+    { params }: { params: Record<string, string> }
 ) {
     const shortId = params.id
     const link = await prisma.link.findFirst({
