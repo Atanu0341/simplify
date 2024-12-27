@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const shortId = params.id
+  const shortId = context.params.id
   const link = await prisma.link.findFirst({
     where: {
       shortUrl: {
